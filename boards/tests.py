@@ -1,20 +1,21 @@
+from nturl2path import url2pathname
 from django.test import TestCase
 from django.urls import reverse
 from django.urls import resolve
 from .views import home, board_topics, new_topic
 from .models import Board, Topic, Post
 from django.contrib.auth.models import User
-
+from .forms import NewTopicForm
 
 # Create your tests here.
 class HomeTests(TestCase):
     def setUp(self):
-        self.board = Board.objects.create(name='Django', description='Django board.')
-        url = reverse('home')
-        self.response = self.client.get(url)
+        self.board = Board.objects.create(name='Django', description='Django board.') # create a board
+        url = reverse('home') # get the path from its name
+        self.response = self.client.get(url) # when client access the url
     
-    def test_home_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+    def test_home_view_status_code(self): # check if the page is displayed for a user
+        self.assertEquals(self.response.status_code, 200) # if status code == 200 return TRUE
     
     def test_home_url_resolves_home_view(self):
         view = resolve('/')
@@ -82,7 +83,13 @@ class NewTopicTests(TestCase):
         response = self.client.post(url, data)
         self.assertTrue(Topic.objects.exists())
         self.assertTrue(Post.objects.exists())
-    
+
+    def test_contains_form(self):
+        url = reverse('new_topic', kwargs={'pk': 1})
+        response = self.client.get(url)
+        form = response.context.get('form')
+        self.assertIsInstance(form, NewTopicForm)
+
     # TODO: check how the app is behaving
     def test_new_topic_invalid_post_data(self):
         '''
@@ -91,7 +98,9 @@ class NewTopicTests(TestCase):
         '''
         url = reverse('new_topic', kwargs={'pk': 1})
         response = self.client.post(url, {})
+        form = response.context.get('form')
         self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
 
     # TODO: sending some data to checking the app behaviors
     def test_new_topic_invalid_post_data_empty_fields(self):
@@ -108,7 +117,6 @@ class NewTopicTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertFalse(Topic.objects.exists())
         self.assertFalse(Post.objects.exists())
-
 
     def test_new_topic_view_success_status_code(self):
         url = reverse('new_topic', kwargs={'pk': 1})
@@ -129,3 +137,6 @@ class NewTopicTests(TestCase):
         board_topics_url = reverse('board_topics', kwargs={'pk': 1})
         response = self.client.get(new_topic_url)
         self.assertContains(response, 'href="{0}"'.format(board_topics_url))
+
+
+    

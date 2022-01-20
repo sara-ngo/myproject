@@ -18,19 +18,7 @@
         {% csrf_token %} <!--cross site request forgery for security-->
 
         <!--we can use form.as_p but its design can't be customized-->
-        {% for field in form %}
-            <div class="form-group">
-                {{ field.label_tag }}
-
-                {% render_field field class="form-control" %}
-
-                {% if field.help_text %}
-                    <small class="form-text text-muted">
-                        {{ field.help_text }}
-                    </small>
-                {% endif %}
-            </div>
-        {% endfor %}
+        {% include 'includes/form.html' %}
 
         <button type="submit" class="btn btn-success">Post</button>
     </form>
