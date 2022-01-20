@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'widget_tweaks', # for bootstrap or any other front-end lib
+
     'boards',
 ]
 
