@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'widget_tweaks', # for bootstrap or any other front-end lib
 
+    'accounts',
     'boards',
 ]
 
