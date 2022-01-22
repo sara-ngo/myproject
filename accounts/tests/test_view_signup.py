@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
-from .views import signup
+from ..views import signup
 from django.contrib.auth.models import User
 
-from .forms import SignUpForm
+from ..forms import SignUpForm
 
 # Create your tests here.
 class SignUpTest(TestCase):
