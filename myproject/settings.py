@@ -134,3 +134,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Here we are passing the name of the URL pattern
+# we want to redirect the user after the log out.
+LOGOUT_REDIRECT_URL = 'home'
+
